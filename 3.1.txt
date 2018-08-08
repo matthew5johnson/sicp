@@ -3,3 +3,7 @@
   (lambda (add-amount)
     (begin (set! current-value (+ add-amount current-value))
            current-value)))
+           
+(define A (make-accumulator 5))
+(A 10)
+;> 15
