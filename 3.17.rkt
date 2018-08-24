@@ -25,9 +25,9 @@
 > 3
 
 ;;; Note: memq = (any list -> (union false list))
-purpose: 
-to determine whether some value is on some list
-(comparing values with eq?)
-my interpretation: 
-so we're building up a list called 'encountered' for every new x we hit (via set! in the else statement). 
-we then test to see if the next x has already been included in our 'encountered' list by invoking memq
+; purpose: 
+; to determine whether some value is on some list
+; (comparing values with eq?)
+; my interpretation: 
+; so we're building up a list called 'encountered' for every new x we hit (via set! in the else statement). 
+; we then test to see if the next x has already been included in our 'encountered' list by invoking memq
