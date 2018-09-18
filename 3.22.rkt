@@ -33,3 +33,5 @@
              (else (error "Command not given - please specify")))) 
   
      dispatch))
+     
+     ; its a cons of pointers
