@@ -1,0 +1,2 @@
+When all wires are initialized to zero, no actions can begin. Thus, we have to get the process started by initializing
+a wire, or else the system wouldn't start. Nothing would be added to the agenda otherwise.
