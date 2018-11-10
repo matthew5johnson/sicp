@@ -1,0 +1,3 @@
+The agenda has to utilize a queue data structure as opposed to an append-list structure because the order matters.
+Values are calculated by each gate, and must occur in proper sequence in order to feed into the next gate.
+Therefore, actions require to be ordered FIFO instead of LIFO.
