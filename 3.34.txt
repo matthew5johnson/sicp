@@ -1,0 +1,8 @@
+ The proposed squarer:
+ (define (squarer a b)
+   (multiplier a a b))
+   
+ Flaw: It's unidirectional. It can only go in the direction of being given a first and then calculating b. 
+ To be a constraint device with two terminals, it would need to function given b as the first argument as well, and it doesn't.
+ 
+ 
