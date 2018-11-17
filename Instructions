@@ -1,0 +1,492 @@
+Left off: http://www.obeythetestinggoat.com/book/chapter_making_deployment_production_ready.html
+ctrl+f: aving Our Changes: Adding Gunicorn to Ou
+
+*** DisallowedHost. Invalid HTTP_HOST header. I've got the nginx config proxy_set_header Host correct, so this is something to do with ALLOWED_HOSTS in settings.py. Common thing in the comments, so shouldn't be too hard to solve.
+
+read: https://www.digitalocean.com/community/tutorials/understanding-nginx-http-proxying-load-balancing-buffering-and-caching
+
+$ subl file  (to open the file in sbblime)
+
+
+
+:::   SETTING UP ENVIRONMENT   :::
+Create venv: python3.6 -m venv virtualenv
+Activate venv: source virtualenv/bin/activate
+
+Install dependencies as you go
+
+cd twice out of home to see usr (within which, put into bin/lib)
+then cd ~ to get back to home
+
+getting bootstrap:
+$ wget -O bootstrap.zip https://github.com/twbs/bootstrap/releases/download/\
+v3.3.4/bootstrap-3.3.4-dist.zip 
+$ unzip bootstrap.zip
+$ mkdir app/static
+$ mv bootstrap-3.3.4-dist app/static/bootstrap
+$ rm bootstrap.zip
+
+
+$ tree -directory-  (UNROLLS EVERYTHING)
+
+==========================================================
+Workflow = FTs for users > unit tests for code, ratchet
+
+:::   Django   :::
+In the virtual environment:
+start the django project: django-admin startproject mysite
+python -m django --version
+python manage.py migrate  ((django's stock apps (settings.py INSTALLED_APPS) use db tables. set them up with this command))
+Run Django Server: python manage.py runserver   (( Look into Apache servers for production))
+browser to interact w/ dev server >>>  http://localhost:8000 or http://127.0.0.1:8000/
+Start an app: python manage.py startapp xyz << creates 'xyz' directory
+Now tell it to use the app: have to add it to superlists/settings.py <- INSTALLED_APPS - polls.apps.PollsConfig
+python manage.py makemigrations polls
+
+UT: python manage.py test lists
+FT: python manage.py test functional_tests  (with your .py FT in the functional_tests dir)
+
+
+Database
+-- 3 steps to making 'model' changes --
+1. Change your models (in models.py)
+2. python manage.py makemigrations
+3. python manage.py migrate   <-- to apply those changes to the db
+
+rm db.sqlite3
+python manage.py migrate --noinput  <-- put an empty db with same schema back into play
+
+python manage.py shell  <-- for python interactive shell running through django's settings
+
+
+############ Deployment 
+1. put this at the bottom of settings.py: STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+2. python manage.py collectstatic
+
+
+===========================================================
+
+:::   GIT   :::
+$ git clone githuburl
+
+$ git remote  << to see all of the git remotes
+$ git remote -v   << for full locations
+
+$ git config --local user.name "name"   << or --global
+$ git config --local user.email "email"
+
+GIT --- all sorts of ways to hide files (.gitignore) and whatnot
+$ echo /folder >> .gitignore
+((( Go back to TDD book ch. 3ish for git unstaging commmands)))
+
+git status
+git add new_file
+ === or ===
+git add .
+=== or ===
+nothing if only changed existing files
+git diff    (--staged < if git diff itself doesn't work?)
+git diff --staged -M  (<< the M detects moves, so it sees that it's still the same file even after moving)
+git commit -m 'comment'  (or if no new files: git commit -am 'comment')
+
+git reset  (to undo a git add if you got the wrong files in there)
+
+git log --oneline
+
+git reset --hard (nuclear!!! back to the last commmit. no going back from this!!!)
+
+-------------
+Start a new git repo
+-------------
+git init
+git add .
+git add .gitignore
+git commit -m ''
+
+-----
+Pulling commits down from a remote repository to our local repo (the remote is located on github, in this case):
+$ git remote add origin github.comurl
+$ git fetch origin master      << 'master' specifies the branch that you're pulling
+$ git branch -a   << shows all of the available branches 
+$ git log   << to see commits on your current branch 
+$ git merge origin/master
+OR for merging up to a specific commit:
+$ git merge <commit hash>    << only puts the commits up to this point into your local repo
+
+
+git log --all --decorate --oneline --graph
+>> to see where HEAD is pointed, and which hash we're on 
+alias graph="git log --all -decorate --oneline --graph"
+$ graph
+
+https://www.youtube.com/watch?v=FyAAIHHClqI
+David Mahler. 
+Introduction to git
+--------
+NEW BRANCH
+$ git branch <branch name>   << to create a new branch wherever the HEAD currently points (check this with git log above)
+$ git branch  << lists the different branches. might need $ git branch -a  to see remote and local branches
+
+---------
+CHECKOUT AND WORK ON BRANCHES
+$ git checkout <branch name>   << to switch HEAD pointer to the other branch. git add . , git commit -m as usual
+
+---------
+MERGING BACK INTO MASTER
+$ git merge <branch name>   << with HEAD on master, this merges the changed SDN branch into master branch
+
+---------
+DELETE A BRANCH
+$ git branch --merged  << to see which branches are merged there. Do this to make sure the two are equal
+$ git branch -d <branch>   << deletes <branch> ; use -D flag to delete a branch that's not merged w/ master 
+
+------
+> "Detached HEAD" is when the HEAD points directly to a commit's hash instead of to a branch like 'master'. To get out of this detached head state, simply checkout one of the branches again. 
+
+------
+CREATE A NEW BRANCH @ ANY RANDOM PREVIOUS HASH
+$ git checkout <hash>
+$ git branch <branch name>
+$ git checkout <new branch name>
+
+
+$ git stash  <<< to stash changes to a branch without committing them, allowing you to go look at other branches in the meantime.
+
+
+
+
+
+
+
+
+===============
+To get our browser to send a POST request, we need 2 things:
+1) Give the <input> element a 'name=' attribute
+2) Wrap it in a <form> tag with 'method=POST'
+
+
+
+
+
+==============
+RETRY LOOP
+start_time = time.time()
+	while True:
+		try:
+			table = self.browser.find_element_by_id('id_list_table')
+			rows = table.find_element_by_tag_name('tr')		
+			return
+			
+		except (AssertionError, WebDriverException) as e:
+			if time.time() - start_time > MAX_WAIT:
+				raise e 
+			time.sleep(0.5)
+
+
+===============
+OTHER CL trinkets
+
+grep -E "class|def" lists/tests.py
+cp lists/templates/home.html lists/templates/list.html
+
+stat file  <-- to see permissions and access of the file
+chmod 777 myfile  <-- to change permission of the file 
+
+
+
+
+
+++++++++++++++++++
+BEST PRACTICES
+
+Red, green, refactor
+3 strikes then refactor
+YAGNI - you 'aint gonna need it (don't just implement everything that comes to mind)
+
+# for describing code functionality itself
+## for meta comments about the code, like why this is here
+
+URLs without a trailing slash are "action" URLs which modify the codebase
+
+superlists/urls.py is really meant for urls that apply to the entire site. For urls that
+only apply to a specific app, django would like you to use a separate app/urls.py to make the app
+more self-contained. Just do a $ cp superlists/urls.py lists/
+
+
+
+Use Sass or LESS to spruce up the CSS 
+
+
+================
+PIP
+
+$ pip install thing --user   == /usr/local/bin
+
+SUDO 
+
+$ sudo apt install thing   == /usr/bin
+
+
+
+
+<><><><><><><>><><>><><>><><><><<><><><><><<><><><><
+DEPLOYMENT           www.whatismydns.net
+<><><><><><><>><><>><><>><><><><<><><><><><<><><><><
+Domain registrar: dynadot  ...  Servers: digital ocean
+
+============ Common Commands ===============
+reload nginx: gandalf@server:$ sudo systemctl reload nginx
+start gunicorn: gandalf@server:$ ./virtualenv/bin/gunicorn --bind unix:/tmp/url.com.socket superlists.wsgi:application
+FT: local:$ STAGING_SERVER=book-example.matthew5johnson.com python ./manage.py test functional_tests --failfast
+============================================
+
+Setup steps:
+set custom DNS on registrar: 
+2x Record type "A" and "IP"
+2x subdomain "book-example" and "book-example-staging"
+
+
+((only a one off thing)) ssh-keygen    (it saves it in /home/setup/.ssh/id_rsa), no passphrase
+cat ~/.ssh/id_rsa.pub   <--- to get public key
+
+LOGIN to server
+ssh root@your-server-ip-address-here
+
+CREATE a non-root user
+in root@server-ip:
+$ useradd -m -s /bin/bash gandalf  ## Add user named gandalf. -m creates a home folder -s sets to use bash 
+$ usermod -a -G sudo gandalf  ## add gandalf to the sudoers group
+$ passwd gandalf  ## password is ***
+$ su - gandalf  ## switch user to being gandalf
+$ mkdir -p ~/.ssh
+$ echo 'PASTE YOUR PUBLIC KEY HERE' >> ~/.ssh/authorized_keys
+-- then verify that you can SSH in as gandalf from your laptop --
+$ ssh gandalf@server-ip
+$ sudo echo hi   <-- to confirm that this user has root/sudo access
+
+---- install python 3.6 and virtualenv on the server. Then git. ----
+gandalf@server:$ sudo apt update
+... sudo apt install python3 python3-venv
+... sudo apt install git
+
+Put our github repo into the server:
+gandalf@server:$ export SITENAME=superlists-staging.matthew5johnson.com
+... git clone github-repo-url.git ~/sites/$SITENAME  (*** remember to add the .git to the end of the url)
+... echo $SITENAME     to check the site that you're dealing with
+... cd ~/sites/$SITENAME
+... python3.6 manage.py runserver
+== it doesn't run because django isn't installed on our server ==
+Back on our local machine in the repo:
+$ echo "django==1.11.13" > requirements.txt
+$ git add requirements.txt
+$ git commit -m "add requirements.txt for virtualenv"
+$ git push origin master
+
+THEN pull those changes down to the server
+gandalf@server:$ git init
+... git pull github-repo-url.git
+
+THEN create a virtual environment just like we did on our own machine:
+gandalf@server:$ python3.6 -m venv virtualenv
+... source ./virtualenv/bin/activate   <-- to activate. Or just call everything we want directly in venv's bin
+... ./virtualenv/bin/pip install -r requirements.txt  <-- to install our requirements
+... ./virtualenv/bin/python manage.py runserver  <-- to run the django server in the virtual env
+
+### Now we've got a system for getting code to and from the server (with git push and git pull), we've got a virtualenv set up to match our local one, and a single file to keep them in sync (requirements.txt)!
+
+$ STAGING_SERVER=book-example.matthew5johnson.com ./manage.py test functional_tests --failfast
+
+## Django's runserver chooses to run on port 8000, but a normal web server should run on port 80
+
+$ STAGING_SERVER=book-example.matthew5johnson.com:8000 ./manage.py test functional_tests --failfast
+Nope, still didn't work. Now let's try curl:
+$ curl book-example.matthew5johnson.com
+Nope, stil doesn't work. Now let's try curl from within the server itself:
+$ ssh gandalf@book-example.matthew5johnson.com
+$ curl localhost:8000
+Yes, this works! 
+!! The reason we can't access the website/server from the outside is because Django's dev server is configured to listen on 127.0.0.1, the "localhost" IP address. But we're trying to reach it from the outside via the server's "real" public address. But Django isn't listening on that address by default. Here's how we tell it to listen on all addresses. Ctrl+C to interrupt the runserver process, then restart it like this:
+gandalf@server:$ ./virtualenv/bin/python manage.py runserver 0.0.0.0:8000 
+
+when visiting the site book-example.matthew5johnson.com:8000
+"Invalid HTTP_HOST header: 'book-example.matthew5johnson.com:8000'. You may need to add 'book-example.matthew5johnson.com' to ALLOWED_HOSTS."
+-- ALLOWED_HOSTS is a security setting designated to reject requests that are likely to be forged or malicious because they don't appear to be asking for your site. By default, when DEBUG=True, ALLOWED_HOSTS allows localhost, our own machine, so that's why it was working in dev AND from the server itself, but not from our own machine. Easy fix: add our site to ALLOWED_HOSTS in superlists/settings.py 
+ALLOWED_HOSTS = ['*']   <-- totally insecure and allows-everyone
+
+*** At this point the website is up and running, we can see the homepage, etc. But the FT is failing due to no db
+SET THAT DB UP
+gandalf@server:$ ./virtualenv/bin/python manage.py migrate --noinput
+
+== It works == But it's very hacky.
+Now we need to host our app on the normal port 80 so that it can be accessed using a regular URL
+And we shouldn't use the django dev server for production.
+We'll use Nginx web server and the Gunicorn Python/WSGI server
+
+Also, settings.py isn't quite finalized. Need to turn DEBUG to False, fix ALLOWED_HOSTS (don't want '*'), and set a unique SECRET_KEY
+
+Finally, we don't want to have to SSH into our server to start the site. INstead, we'll write a Systemd config file so that it starts up automatically whenever the server reboots.
+
+
+
+~~~~~~~ Switching to Nginx
+gandalf@server:$ sudo apt install nginx
+gandalf@server:$ sudo systemctl start nginx
+now you can go to port 80 of the site and see the 'welcome to nginx' message.
+Next we need to configure the Nginx web server to talk to Django
+1. Create an Nginx config file to tell it to send requests for our staging site along to Django.
+server: /etc/nginx/sites-available/book-example.matthew5johnson.com
+gandalf@server:$ cd ..
+gandalf@server:$ cd ..
+gandalf@server:$ cd etc
+gandalf@server:$ cd nginx
+gandalf@server:$ cd sites-available
+gandalf@server:$ sudo touch book-example.matthew5johnson.com
+gandalf@server:$ sudo vi book-example.matthew5johnson.com
+OPENS UP vi for text editing  https://www.cs.colostate.edu/helpdocs/vi.html
+vi commands: i for edit mode, esc back to command mode, :wq to save and quit, :q! to exit without saving
+
+Now we add it to the enabled sites for the server by creating a symlink to it:
+## To reset our env var (if necessary)
+gandalf@server:$ export SITENAME=book-example.matthew5johnson.com
+gandalf@server:$ cd /etc/nginx/sites-enabled/
+gandalf@server:$ sudo ln -s /etc/nginx/sites-available/$SITENAME $SITENAME
+## Check our symlink has worked:
+gandalf@server:$ readlink -f $SITENAME
+>> should print "/etc/nginx/sites-available/book-example.matthew5johnson.com"
+,,,,, this is the Debian/Ubuntu preferred way of saving Nginx configs. The real config file in sites-available, and a symlink in sites-enabled; the idea is that it makes it easier to switch sites on or off.
+,,,,, We can also remove the default "Welcome to nginx" config:
+gandalf@server:$ sudo rm /etc/nginx/sites-enabled/default
+
+Now let's test it.
+1. Reload nginx and resart our server:
+gandalf@server:$ sudo systemctl reload nginx
+#### These next two commands throw a "no such file or directory error", but work if you cd .. into the home folder and omit the ./virtualenv and make it straight virtualenv/... instead
+gandalf@server:$ cd ~/sites/$SITENAME
+gandalf@server:$ ./virtualenv/bin/python manage.py runserver 8000
+
+*** If you ever find that Nginx isn't behaving as expected:
+gandalf@server:$ sudo nginx -t  <-- does a config test and will warn of any problems with config files
+
+Now run FTs on our local machine again:
+$ STAGING_SERVER=book-example.matthew5johnson.com ./manage.py test functional_tests --failfast
+!! they work !!
+
+
+~~~~~~~~  Switching to Gunicorn
+gandalf@server:$ ./virtualenv/bin/pip install gunicorn
+Gunicorn needs to know a path to a WSGI server, which is usually a function called 'application'. Django provides
+!!! ctrl+q server if it's running. It can't be in use while setting up gunicorn
+gandalf@server:$ ./virtualenv/bin/gunicorn superlists.wsgi:application
+^^^ Now this looks like it's running the server in an ongoing process
+-- now the CSS is broken if you run the FTs b/c the Django dev server magically serves our static files, but Gunicorn doesn't. We need to tell nginx to serve our static files instead
+
+~~~~~~~  Getting nginx to serve static files
+gandalf@server:$ ./virtualenv/bin/python manage.py collectstatic --noinput
+^^^ "15 files copied to '/home/gandalf/static'." <<-- this differs from the book's '/home/gandalf/sites/book-example.com/static'
+you can look at them by:$ ls static/
+Now we tell Nginx to start serving those static files for us by adding as second 'location' directive to the config:
+server: /etc/nginx/sites-available/book-example.matthew5johnson.com
+$ sudo vi book-example.matthew5johnson.com   ((( chapter 10 of the book: http://www.obeythetestinggoat.com/book/chapter_making_deployment_production_ready.html ))) My path to the static files is different than the book (see above)
+Now reload Nginx and restart Gunicorn..
+gandalf@server:$ sudo systemctl reload nginx
+gandalf@server:$ ./virtualenv/bin/gunicorn superlists.wsgi:application
+
+~~~~~~~  Switching to using Unix sockets
+When we want to serve both staging and live, we can't have both servers trying to use port 8000. Going to use Unix domain sockets - they're like files on disk, but can be used by Nginx and Gunicorn to talk to each other. We'll put our sockets in /tmp. Change the proxy settings in Nginx:
+server: /etc/nginx/sites-available/book-example.matthew5johnson.com
+$ sudo vi book-example.matthew5johnson.com
+with vi, location in the document is changed to proxy_pass http://unix:/tmp/book-example.matthew5johnson.com.socket; proxy_set_header Host $host;
+^^ Now we restart gunicorn, but this time telling it to listen on a socket instead of on the default port:
+gandalf@server:$ sudo systemctl reload nginx
+gandalf@server:$ ./virtualenv/bin/gunicorn --bin unix:/tmp/book-example.matthew5johnson.socket superlists.wsgi:application
+And running the FTs again work
+(local)$ STAGING_SERVER=book-example.matthew5johnson.com python manage.py test funtional_tests
+
+
+
+~~~~~~~  Using environment variables to adjust settings for production
+There are several things in settings.py that we want to change for production:
+-ALLOWED_HOSTS is currently set to "*" which isn't secure. We want to be set to only match the site we're supposed to be serving (book-example.matthew5johnson.com)
+-DEBUG is unsafe to leave on for the world to see tracebacks 
+-SECRET_KEY is used by Django 
+
+!!!!! THIS IS IN THE DEEPER superlists. Not the ~superlists
+
+./book-example.matthew5johnson.com/superlists/settings.py:
+if 'DJANGO_DEBUG_FALSE' in os.environ:
+	DEBUG = False
+	SECRET_KEY = os.environ['DJANGO_SECRET_KEY']
+	ALLOWED_HOSTS = [os.environ['SITENAME']]
+else:
+	DEBUG = True
+	SECRET_KEY = 'insecure-key-for-dev'
+	ALLOWED_HOSTS = []
+
+git commit -am 'use env vars for prod settings'
+git push origin master
+
+Then pull down on the server, export a couple of environment variables, and restart Gunicorn:
+gandalf@server:$ git pull url
+gandalf@server:$ export DJANGO_DEBUG_FALSE=y DJANGO_SECRET_KEY=abc123 SITENAME=book-example.matthew5johnson.com
+gandalf@server:$ ./virtualenv/bin/gunicorn --bind unix:/tmp/book-example.matthew5johnson.com.socket \ superlists.wsgi:application
+Then FT:
+(local)$ STAGING_SERVER=book-example.matthew5johnson.com ./manage.py test functional_tests --failfast
+
+
+~~~~~~  Using a .env file to store our environment variables
+$ echo .env >> .gitignore
+$ git commit -am 'gitignore .env file'
+$ git push origin master
+gandalf@server:$ pwd  <-- to get working directory
+# /home/gandalf/sites/book-example.matthew5johnson.com
+gandalf@server:$ echo DJANGO_DEBUG_FALSE=y >> .env
+gandalf@server:$ echo SITENAME=$SITENAME >> .env
+gandalf@server:$ echo DJANGO_SECRET_KEY=$(
+python3.6 -c "import random; print(''.join(random.SystemRandom().choices('abcdefghijklmnopqrstuvwxyz0123456789', k=50)))") >> .env
+gandalf@server:$ cat .env
+# Gives you all of the env vars
+### Now let's check that our env file works, and restart gunicorn:
+gandalf@server:$ unset DJANGO_SECRET_KEY DJANGO_DEBUG_FALSE SITENAME
+gandalf@server:$ echo $DJANGO_DEBUG_FALSE-none
+# -none
+gandalf@server:$ set -a; source .env; set +a
+gandalf@server:$ echo $DJANGO_DEBUG_FALSE-none
+# y-none
+gandalf@server:$ ./virtualenv/bin/gunicorn --bind unix:/tmp/$SITENAME.socket superlists.wsgi:application
+
+The FTs work now. 
+
+~~~~~~~~  Using Systemd to make sure gunicorn starts on boot
+Our final step is to make sure that the server starts up gunicorn auto on boot, and reloads it auto if crashes
+Systemd config file:
+server: /etc/systemd/system/gunicorn-book-example.matthew5johnson.com.service
+$ sudo touch the service file
+$ sudo vi the new file
+[Unit]
+Description=Gunicorn server for superlists-staging.ottg.eu
+
+[Service]
+Restart=on-failure  
+User=elspeth  
+WorkingDirectory=/home/elspeth/sites/superlists-staging.ottg.eu  
+EnvironmentFile=/home/elspeth/sites/superlists-staging.ottg.eu/.env  
+
+ExecStart=/home/elspeth/sites/superlists-staging.ottg.eu/virtualenv/bin/gunicorn \
+    --bind unix:/tmp/superlists-staging.ottg.eu.socket \
+    superlists.wsgi:application  
+
+[Install]
+WantedBy=multi-user.target
+
+!!! Now tell Systemd to load our new config file
+gandalf@server:$ sudo systemctl daemon-reload
+## Tell systemd to always load our service on boot
+gandalf@server:$ sudo systemctl enable gunicorn-book-example.matthew5johnson.com
+## This command actually starts our service
+gandalf@server:$ sudo systemctl restart gunicorn-book-example.matthew5johnson.com
+
+*** After making changes to the systemd config file, always run daemon-reload before sytemctl restart
+Also reload nginx: sudo systemctl reload nginx
+
+To see status: systemctl status gunicorn-book-example.matthew5johnson.com
+To see logs: journalctl
