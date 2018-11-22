@@ -1,0 +1,11 @@
+Peter:	(set! balance (+ balance 10))
+Paul:	(set! balance (- balance 20))
+Mary:	(set! balance (- balance (/ balance 2)))
+
+a. If run sequentially in the order above, the result would be a balance of -5.
+1) balance of 10 (10 deposited)
+2) balance of -10 (20 withdrawn)
+3) balance of -5 (5 deposited)
+
+b. Peter's deposit would have to be first in order to avoid NSF, but either Paul or Mary could go second and third. With concurrency,
+you could get a final balance ranging from -5 to -15.
