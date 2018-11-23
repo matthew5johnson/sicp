@@ -1,0 +1,7 @@
+Using the serializer, we can only get two results:
+
+10 x 10 = 100
+and
+then X is fed to the next sequence which computes 100+1 = 101
+
+Serializing the functions seems to remove the large number of potential permutations of order  
