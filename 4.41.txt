@@ -1,0 +1,5 @@
+Since the environment modulators (withdraw! and deposit!) each only have one set!, the order of processes doesn't matter.
+If serialization is not used, and another user sees an incorrect balance while a withdrawal or deposit is being processed, 
+they either see the beginning balance or ending balance. If they perform a withraw! or deposit! of their own, since it's only a one step
+procedure anyway, they start with either the beginning or ending balance relative to the concurrent process. You'd want to start using
+serializers when the number of state changes in a single process got to be above one.
