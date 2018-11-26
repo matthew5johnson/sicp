@@ -1,0 +1,3 @@
+Serializing on either end will result in the same thing when the functions themselves only have one step. 
+
+Either implementation will result in the same outputs  
