@@ -1,0 +1,6 @@
+Implementing such precision seems like overkill for a simple bank account.
+
+But, I can imagine a scenario in which it would be beneficial to protect the call to 'balance' by putting it within a serializer.
+In a situation where there are multiple concurrent calls for balance, withdrawals, and deposits, serializing the call to 
+balance will ensure that at least the one-off procedures indivually complete before a balance can be returned.
+The setting would need to be time sensitive for such an implementation to be worth the trouble.
