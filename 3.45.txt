@@ -1,0 +1,3 @@
+The whole process of moving funds from one account to another requires a withdrawal and a deposit. If you serialize both of these individual procedures in the global environment, then the second procedure will never be run as it waits on the first one to complete. So the problem is that the transfer of funds would not occur if the serialization is done in this way.
+
+That's why all of the previous examples of serialized withdraw and deposit procedures were unserialized on the lower level.
