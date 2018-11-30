@@ -1,0 +1,12 @@
+Suppose that we implement test-and-set! using an ordinary procedure as shown in the text, without attempting to make the operation atomic. Draw a timing diagram like the one in figure 3.29 to demonstarte how the mutext implementation can fail by allowing two processes to acquire the mutex at the same time.
+
+The ordinary procedure shown in the text:
+(define (test-and-set! cell)
+  (if (car cell)
+      true
+      (begin (set-car! cell true)
+             false)))
+             
+What does this ordinary procedure do? It very simply sets the "cell" value within the make-mutex procedure to true if already true, or to true and then false if cell evaluates to false. The problem is that test-and-set! is not performed atomically. [which means that once a process has tested the cell and found it to be false, the cell contents will actually be set to true before any other process can test the cell.]
+
+So the timing diagram showing this test and set procedure failing to serialize our two processes would look like: Both functions grabbing the mutex at the same time, both seeing that the cell's value is false which tells each of them that it's okay to use the mutex. And then both will spit out a true value for cell and then attempt to go through with their procedures. If I understand this correctly, it seems like such a mutex design is as if there's not serialization at all.
