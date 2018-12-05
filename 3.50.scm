@@ -1,7 +1,7 @@
 (define (steam-map proc . argstreams)
-  (if (<?> (car argstreams))
+  (if (stream-empty? (car argstreams))
       the-empty-stream
-      (<?>
-       (apply proc (map <?> argstreams))
+      (cons stream
+       (apply proc (map car-s argstreams))
        (apply stream-map
-              (cons proc (map <?> argstreams))))))
+              (cons proc (map cdr-s argstreams))))))
