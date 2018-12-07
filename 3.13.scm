@@ -1,4 +1,3 @@
-#lang sicp
 ;;;;   3.13
 (define (cycle x)
   (set-cdr! (last-pair x) x)
