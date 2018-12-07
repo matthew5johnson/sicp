@@ -1,0 +1,18 @@
+Without running the program, describe the elements of the stream defined by 
+
+(define s (cons-stream 1 (add-streams s s)))
+
+s is a stream of 1 and (add-streams s s). 
+
+From earlier in the chapter:
+(define (add-streams s1 s2)
+  (stream-map + s1 s2))
+  
+So in our question, (add-streams s s) is performing stream-map on the streams s and s.
+This means that each time we cdr down the stream, we get a new car that's double the previous number that the stream produced.
+
+> 1
+> 2
+> 4
+> 8
+...
