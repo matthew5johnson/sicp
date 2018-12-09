@@ -1,4 +1,3 @@
-#lang sicp
 ;;;;   3.18 
 
 (define a (list 'a 'b 'c))
