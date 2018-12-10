@@ -1,5 +1,3 @@
-#lang sicp
-
 ;;;;   3.19
 
 (define (cycle? x) 
