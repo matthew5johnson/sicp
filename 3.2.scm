@@ -1,5 +1,3 @@
-#lang sicp
-
 ;;;;   3.2
 (define (make-monitored procedure)
   (let ((calls 0))
