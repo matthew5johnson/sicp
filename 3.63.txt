@@ -1,0 +1,4 @@
+By using lambda instead of memo-proc, the procedure has to recalculate all of the previous guesses as it progresses through more guesses. This results in O(x^x) complexity, while memo-proc is O(x) since it's saving all of the previously generated guesses to avoid recalculations.
+
+----------
+It looks a little more complicated than my simple answer above. Has to do with the first access to sqrt-stream x hitting stream-car x and having to perform recursively from there.
