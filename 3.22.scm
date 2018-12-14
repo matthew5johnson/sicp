@@ -1,5 +1,5 @@
 ;;;;   3.22
-#lang sicp
+
 
 (define (make-queue) 
    (let ((front-ptr '()) (rear-ptr '())) 
