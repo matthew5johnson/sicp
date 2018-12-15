@@ -1,5 +1,4 @@
 ;;;;   3.23
-#lang sicp
 
 (define (make-deque) 
    (let ((front-ptr '()) (rear-ptr '())) 
