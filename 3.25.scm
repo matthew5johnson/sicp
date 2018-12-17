@@ -1,5 +1,3 @@
-#lang sicp
-
 ; 3.3.3 Representing Tables
 
 (define (lookup key-list)
