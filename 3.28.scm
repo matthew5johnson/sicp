@@ -1,8 +1,8 @@
-A simulator for Digital Circuits
+; A simulator for Digital Circuits
 
-3.3.4
+; 3.3.4
 ; 3.28
-#lang sicp
+
 
 (define (or-gate a1 a2 output)
   (define (or-action-procedure)
