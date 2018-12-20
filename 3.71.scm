@@ -9,7 +9,7 @@
 (define (ramanujan holder) 
   (let (previous-value (stream-car holder))
        (next-value (stream-car (stream-cdr holder)))
-       (test (cubes previous-value
+       (test (cubes previous-value))
     (if (eq? (cubes previous-value) (cubes next-value))
         (cons-stream (list (cubes previous-value) previous-value next-value)
                      (ramanujan (stream-cdr (stream-cdr holder))))
