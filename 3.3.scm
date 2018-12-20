@@ -1,5 +1,3 @@
-#lang sicp
-
 ;;;;   3.3
 (define (make-account balance password)
   (define (withdraw amount)
