@@ -1,4 +1,3 @@
-#lang sicp
 ; 3.29
 
 (define (or-gate a1 a2 output)
