@@ -1,5 +1,3 @@
-#lang sicp
-
 ; (/ (+ a b) 2) = c
 
 (define (averager a b c)
