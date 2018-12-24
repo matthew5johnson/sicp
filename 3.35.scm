@@ -1,5 +1,3 @@
-#lang sicp
-
 ; basically: write a squarer primitive constraint
 ; this is almost an exact rewrite of the adder and multiplier constraints given earlier in the chapter
 
