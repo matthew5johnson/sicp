@@ -1,5 +1,3 @@
-#lang sicp 
-
 ; 3.30
 
 (define (ripple-carry-adder Al Bl Sl C)
