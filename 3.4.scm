@@ -1,4 +1,3 @@
-#lang sicp
 
 ;;;;   3.4
 (define (make-account-error-enabled balance password)
