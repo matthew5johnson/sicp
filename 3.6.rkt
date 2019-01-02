@@ -1,4 +1,4 @@
-#lang sicp
+
 
 ;;;;   3.6
 (define random-seed 3)
