@@ -1,4 +1,4 @@
-#lang sicp
+
 
 ;;;;   3.5
 (define (square x) (* x x))
