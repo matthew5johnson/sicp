@@ -1,5 +1,3 @@
-#lang sicp
-
 ;;;;   3.7
 
 (define (make-account-37 balance pass-origin) 
