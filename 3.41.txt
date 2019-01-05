@@ -4,3 +4,9 @@ But, I can imagine a scenario in which it would be beneficial to protect the cal
 In a situation where there are multiple concurrent calls for balance, withdrawals, and deposits, serializing the call to 
 balance will ensure that at least the one-off procedures indivually complete before a balance can be returned.
 The setting would need to be time sensitive for such an implementation to be worth the trouble.
+
+Since the environment modulators (withdraw! and deposit!) each only have one set!, the order of processes doesn't matter.
+If serialization is not used, and another user sees an incorrect balance while a withdrawal or deposit is being processed, 
+they either see the beginning balance or ending balance. If they perform a withraw! or deposit! of their own, since it's only a one step
+procedure anyway, they start with either the beginning or ending balance relative to the concurrent process. You'd want to start using
+serializers when the number of state changes in a single process got to be above one.
