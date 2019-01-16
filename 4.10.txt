@@ -1,0 +1,2 @@
+You can change the name of any function within the list of evals as long as they correspond to their definition later in the program.
+The names are completely arbitrary
